@@ -79,7 +79,7 @@ const char* IPExtension::GetAuthor()
 
 const char* IPExtension::GetName()
 {
-    return "Base Extension";
+    return "IP Address API";
 }
 
 const char* IPExtension::GetVersion()
