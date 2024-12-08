@@ -1,10 +1,15 @@
 #include "entrypoint.h"
+#include <lua/lua.h>
+#include <lua/lauxlib.h>
+#include <lua/lualib.h>
+#include <LuaBridge/LuaBridge.h>
+#include "ipclass.h"
 
 //////////////////////////////////////////////////////////////
 /////////////////        Core Variables        //////////////
 ////////////////////////////////////////////////////////////
 
-BaseExtension g_Ext;
+IPExtension g_Ext;
 CREATE_GLOBALVARS();
 
 //////////////////////////////////////////////////////////////
@@ -12,7 +17,7 @@ CREATE_GLOBALVARS();
 ////////////////////////////////////////////////////////////
 
 EXT_EXPOSE(g_Ext);
-bool BaseExtension::Load(std::string& error, SourceHook::ISourceHook *SHPtr, ISmmAPI* ismm, bool late)
+bool IPExtension::Load(std::string& error, SourceHook::ISourceHook *SHPtr, ISmmAPI* ismm, bool late)
 {
     SAVE_GLOBALVARS();
     if(!InitializeHooks()) {
@@ -20,47 +25,64 @@ bool BaseExtension::Load(std::string& error, SourceHook::ISourceHook *SHPtr, ISm
         return false;
     }
 
-    ismm->ConPrint("Printing a text from extensions land!\n");
     return true;
 }
 
-bool BaseExtension::Unload(std::string& error)
+bool IPExtension::Unload(std::string& error)
 {
     UnloadHooks();
     return true;
 }
 
-void BaseExtension::AllExtensionsLoaded()
+void IPExtension::AllExtensionsLoaded()
+{
+}
+
+void IPExtension::AllPluginsLoaded()
 {
 
 }
 
-void BaseExtension::AllPluginsLoaded()
+bool IPExtension::OnPluginLoad(std::string pluginName, void* pluginState, PluginKind_t kind, std::string& error)
 {
+    if(kind == PluginKind_t::Lua) {
+        lua_State* state = (lua_State*)pluginState;
 
+        luabridge::getGlobalNamespace(state)
+            .beginClass<PluginIPAPI>("IPAPI")
+            .addConstructor<void (*)(std::string)>()
+            .addFunction("GetIsoCode", &PluginIPAPI::GetIsoCode)
+            .addFunction("GetContinent", &PluginIPAPI::GetContinent)
+            .addFunction("GetCountry", &PluginIPAPI::GetCountry)
+            .addFunction("GetRegion", &PluginIPAPI::GetRegion)
+            .addFunction("GetCity", &PluginIPAPI::GetCity)
+            .addFunction("GetTimezone", &PluginIPAPI::GetTimezone)
+            .addFunction("GetLatitude", &PluginIPAPI::GetLatitude)
+            .addFunction("GetLongitude", &PluginIPAPI::GetLongitude)
+            .addFunction("GetASN", &PluginIPAPI::GetASN)
+            .endClass();
+
+        luaL_dostring(state, "ip = IPAPI(GetCurrentPluginName())");
+    }
+    return true;
 }
 
-bool BaseExtension::OnPluginLoad(std::string pluginName, void* pluginState, PluginKind_t kind, std::string& error)
+bool IPExtension::OnPluginUnload(std::string pluginName, void* pluginState, PluginKind_t kind, std::string& error)
 {
     return true;
 }
 
-bool BaseExtension::OnPluginUnload(std::string pluginName, void* pluginState, PluginKind_t kind, std::string& error)
-{
-    return true;
-}
-
-const char* BaseExtension::GetAuthor()
+const char* IPExtension::GetAuthor()
 {
     return "Swiftly Development Team";
 }
 
-const char* BaseExtension::GetName()
+const char* IPExtension::GetName()
 {
     return "Base Extension";
 }
 
-const char* BaseExtension::GetVersion()
+const char* IPExtension::GetVersion()
 {
 #ifndef VERSION
     return "Local";
@@ -69,7 +91,7 @@ const char* BaseExtension::GetVersion()
 #endif
 }
 
-const char* BaseExtension::GetWebsite()
+const char* IPExtension::GetWebsite()
 {
     return "https://swiftlycs2.net/";
 }

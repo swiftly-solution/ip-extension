@@ -3,7 +3,7 @@
  */
 
 
-#include <GeoLite2PP_error_category.hpp>
+#include <geolite2pp/GeoLite2PP_error_category.hpp>
 #include <maxmind/maxminddb.h>
 
 

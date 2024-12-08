@@ -3,9 +3,9 @@
  */
 
 
-#include <GeoLite2PP.hpp>
-#include <GeoLite2PP_error_category.hpp>
-#include <GeoLite2PP_version.hpp>
+#include <geolite2pp/GeoLite2PP.hpp>
+#include <geolite2pp/GeoLite2PP_error_category.hpp>
+#include <geolite2pp/GeoLite2PP_version.hpp>
 
 
 GeoLite2PP::DB::~DB( void )
