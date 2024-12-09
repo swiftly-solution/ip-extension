@@ -69,6 +69,11 @@ bool IPExtension::OnPluginLoad(std::string pluginName, void* pluginState, Plugin
 
 bool IPExtension::OnPluginUnload(std::string pluginName, void* pluginState, PluginKind_t kind, std::string& error)
 {
+    if(kind == PluginKind_t::Lua) {
+        lua_State* state = (lua_State*)pluginState;
+        
+        luaL_dostring(state, "ip = nil");
+    }
     return true;
 }
 
