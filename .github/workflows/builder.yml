@@ -76,8 +76,8 @@ jobs:
                   sudo apt install -y libreadline-dev libboost-all-dev fdupes unzip
                   bash ./setup.sh
 
-                  wget https://git.io/GeoLite2-City.mmdb -O build/package/addons/swiftly/data/GeoLite2-City.mmdb
-                  wget https://git.io/GeoLite2-ASN.mmdb -O build/package/addons/swiftly/data/GeoLite2-ASN.mmdb
+                  wget https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-City.mmdb -O build/package/addons/swiftly/data/GeoLite2-City.mmdb
+                  wget https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-ASN.mmdb -O build/package/addons/swiftly/data/GeoLite2-ASN.mmdb
 
             - name: Build - Windows
               if: matrix.os == 'windows-latest'
@@ -87,8 +87,8 @@ jobs:
 
                   Set-Location build/package/addons/swiftly
 
-                  Invoke-WebRequest https://git.io/GeoLite2-City.mmdb -OutFile data/GeoLite2-City.mmdb
-                  Invoke-WebRequest https://git.io/GeoLite2-ASN.mmdb -OutFile data/GeoLite2-ASN.mmdb
+                  Invoke-WebRequest https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-City.mmdb -OutFile data/GeoLite2-City.mmdb
+                  Invoke-WebRequest https://github.com/P3TERX/GeoLite.mmdb/raw/download/GeoLite2-ASN.mmdb -OutFile data/GeoLite2-ASN.mmdb
 
                   Set-Location ../../../..
 
