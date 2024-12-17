@@ -1,6 +1,7 @@
 #include "ipclass.h"
 #include "entrypoint.h"
 #include <geolite2pp/GeoLite2PP.hpp>
+#include <swiftly-ext/files.h>
 
 GeoLite2PP::DB *maxminddbCity = nullptr;
 GeoLite2PP::DB *maxminddbASN = nullptr;
@@ -8,8 +9,8 @@ GeoLite2PP::DB *maxminddbASN = nullptr;
 PluginIPAPI::PluginIPAPI(std::string m_plugin_name)
 {
     this->plugin_name = m_plugin_name;
-    if(!maxminddbCity) maxminddbCity = new GeoLite2PP::DB("addons/swiftly/data/GeoLite2-City.mmdb");
-    if(!maxminddbASN) maxminddbASN = new GeoLite2PP::DB("addons/swiftly/data/GeoLite2-ASN.mmdb");
+    if(!maxminddbCity) maxminddbCity = new GeoLite2PP::DB(GeneratePath("addons/swiftly/data/GeoLite2-City.mmdb"));
+    if(!maxminddbASN) maxminddbASN = new GeoLite2PP::DB(GeneratePath("addons/swiftly/data/GeoLite2-ASN.mmdb"));
 }
 
 std::string PluginIPAPI::GetIsoCode(std::string ip)
