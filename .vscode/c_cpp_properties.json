@@ -8,7 +8,10 @@
                 "${workspaceFolder}/alliedmodders/metamod/**",
                 "${workspaceFolder}/alliedmodders/metamod/core/**",
                 "${workspaceFolder}/src/**",
-                "${workspaceFolder}/vendor/**"
+                "${workspaceFolder}/vendor/**",
+                "${workspaceFolder}/vendor/embedder/src/**",
+                "${workspaceFolder}/vendor/embedder/libs/js/**",
+                "${workspaceFolder}/vendor/embedder/libs/lua/**"
             ],
             "defines": [
                 "_DEBUG",
@@ -30,7 +33,10 @@
                 "${workspaceFolder}/alliedmodders/metamod/**",
                 "${workspaceFolder}/alliedmodders/metamod/core/**",
                 "${workspaceFolder}/src/**",
-                "${workspaceFolder}/vendor/**"
+                "${workspaceFolder}/vendor/**",
+                "${workspaceFolder}/vendor/embedder/src/**",
+                "${workspaceFolder}/vendor/embedder/libs/js/**",
+                "${workspaceFolder}/vendor/embedder/libs/lua/**"
             ],
             "defines": [
                 "_DEBUG",

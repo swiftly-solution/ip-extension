@@ -66,6 +66,10 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "any": "cpp",
-        "lvm.h": "c"
+        "lvm.h": "c",
+        "codecvt": "cpp",
+        "optional": "cpp",
+        "future": "cpp",
+        "variant": "cpp"
     }
 }

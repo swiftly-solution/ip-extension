@@ -1,8 +1,5 @@
 #include "entrypoint.h"
-#include <lua/lua.h>
-#include <lua/lauxlib.h>
-#include <lua/lualib.h>
-#include <LuaBridge/LuaBridge.h>
+#include <Embedder.h>
 #include "ipclass.h"
 
 //////////////////////////////////////////////////////////////
@@ -46,35 +43,31 @@ void IPExtension::AllPluginsLoaded()
 
 bool IPExtension::OnPluginLoad(std::string pluginName, void* pluginState, PluginKind_t kind, std::string& error)
 {
-    if(kind == PluginKind_t::Lua) {
-        lua_State* state = (lua_State*)pluginState;
+    EContext* state = (EContext*)pluginState;
 
-        luabridge::getGlobalNamespace(state)
-            .beginClass<PluginIPAPI>("IPAPI")
-            .addConstructor<void (*)(std::string)>()
-            .addFunction("GetIsoCode", &PluginIPAPI::GetIsoCode)
-            .addFunction("GetContinent", &PluginIPAPI::GetContinent)
-            .addFunction("GetCountry", &PluginIPAPI::GetCountry)
-            .addFunction("GetRegion", &PluginIPAPI::GetRegion)
-            .addFunction("GetCity", &PluginIPAPI::GetCity)
-            .addFunction("GetTimezone", &PluginIPAPI::GetTimezone)
-            .addFunction("GetLatitude", &PluginIPAPI::GetLatitude)
-            .addFunction("GetLongitude", &PluginIPAPI::GetLongitude)
-            .addFunction("GetASN", &PluginIPAPI::GetASN)
-            .endClass();
+    BeginClass<PluginIPAPI>("IPAPI", state)
+        .addConstructor<std::string>()
+        .addFunction("GetIsoCode", &PluginIPAPI::GetIsoCode)
+        .addFunction("GetContinent", &PluginIPAPI::GetContinent)
+        .addFunction("GetCountry", &PluginIPAPI::GetCountry)
+        .addFunction("GetRegion", &PluginIPAPI::GetRegion)
+        .addFunction("GetCity", &PluginIPAPI::GetCity)
+        .addFunction("GetTimezone", &PluginIPAPI::GetTimezone)
+        .addFunction("GetLatitude", &PluginIPAPI::GetLatitude)
+        .addFunction("GetLongitude", &PluginIPAPI::GetLongitude)
+        .addFunction("GetASN", &PluginIPAPI::GetASN)
+    .endClass();
 
-        luaL_dostring(state, "ip = IPAPI(GetCurrentPluginName())");
-    }
+    GetGlobalNamespace(state).addConstant("ip", PluginIPAPI(pluginName));
+
     return true;
 }
 
 bool IPExtension::OnPluginUnload(std::string pluginName, void* pluginState, PluginKind_t kind, std::string& error)
 {
-    if(kind == PluginKind_t::Lua) {
-        lua_State* state = (lua_State*)pluginState;
-        
-        luaL_dostring(state, "ip = nil");
-    }
+    EContext* state = (EContext*)pluginState;
+    
+    GetGlobalNamespace(state).addConstant("ip", nullptr);
     return true;
 }
 
