@@ -2,103 +2,116 @@
 #include "entrypoint.h"
 #include <geolite2pp/GeoLite2PP.hpp>
 #include <swiftly-ext/files.h>
+#include <string>
 
-GeoLite2PP::DB *maxminddbCity = nullptr;
-GeoLite2PP::DB *maxminddbASN = nullptr;
+GeoLite2PP::DB* maxminddbCity = nullptr;
+GeoLite2PP::DB* maxminddbASN = nullptr;
 
-PluginIPAPI::PluginIPAPI(std::string m_plugin_name)
+void SetupScripting(EContext* ctx)
 {
-    this->plugin_name = m_plugin_name;
-    if(!maxminddbCity) maxminddbCity = new GeoLite2PP::DB(GeneratePath("addons/swiftly/data/GeoLite2-City.mmdb"));
-    if(!maxminddbASN) maxminddbASN = new GeoLite2PP::DB(GeneratePath("addons/swiftly/data/GeoLite2-ASN.mmdb"));
-}
+    if (!maxminddbCity) maxminddbCity = new GeoLite2PP::DB(GeneratePath("addons/swiftly/data/GeoLite2-City.mmdb"));
+    if (!maxminddbASN) maxminddbASN = new GeoLite2PP::DB(GeneratePath("addons/swiftly/data/GeoLite2-ASN.mmdb"));
 
-std::string PluginIPAPI::GetIsoCode(std::string ip)
-{
-    try {
-        auto m = maxminddbCity->get_all_fields(ip);
-        return m["country_iso_code"];
-    } catch(std::exception& e) {
-        return "";
-    }
-}
+    ADD_CLASS("IPAPI");
 
-std::string PluginIPAPI::GetContinent(std::string ip)
-{
-    try {
-        auto m = maxminddbCity->get_all_fields(ip);
-        return m["continent"];
-    } catch(std::exception& e) {
-        return "";
-    }
-}
+    ADD_CLASS_FUNCTION("IPAPI", "GetIsoCode", [](FunctionContext* context, ClassData* data) -> void {
+        std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
+        try {
+            auto m = maxminddbCity->get_all_fields(ip);
+            context->SetReturn(m["country_iso_code"]);
+        }
+        catch (std::exception& e) {
+            context->SetReturn("");
+        }
+        });
 
-std::string PluginIPAPI::GetCountry(std::string ip)
-{
-    try {
-        auto m = maxminddbCity->get_all_fields(ip);
-        return m["country"];
-    } catch(std::exception& e) {
-        return "";
-    }
-}
+    ADD_CLASS_FUNCTION("IPAPI", "GetContinent", [](FunctionContext* context, ClassData* data) -> void {
+        std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
+        try {
+            auto m = maxminddbCity->get_all_fields(ip);
+            context->SetReturn(m["continent"]);
+        }
+        catch (std::exception& e) {
+            context->SetReturn("");
+        }
+        });
 
-std::string PluginIPAPI::GetRegion(std::string ip)
-{
-    try {
-        auto m = maxminddbCity->get_all_fields(ip);
-        return m["subdivision"];
-    } catch(std::exception& e) {
-        return "";
-    }
-}
+    ADD_CLASS_FUNCTION("IPAPI", "GetCountry", [](FunctionContext* context, ClassData* data) -> void {
+        std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
+        try {
+            auto m = maxminddbCity->get_all_fields(ip);
+            context->SetReturn(m["country"]);
+        }
+        catch (std::exception& e) {
+            context->SetReturn("");
+        }
+        });
 
-std::string PluginIPAPI::GetCity(std::string ip)
-{
-    try {
-        auto m = maxminddbCity->get_all_fields(ip);
-        return m["city"];
-    } catch(std::exception& e) {
-        return "";
-    }
-}
+    ADD_CLASS_FUNCTION("IPAPI", "GetRegion", [](FunctionContext* context, ClassData* data) -> void {
+        std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
+        try {
+            auto m = maxminddbCity->get_all_fields(ip);
+            context->SetReturn(m["subdivision"]);
+        }
+        catch (std::exception& e) {
+            context->SetReturn("");
+        }
+        });
 
-std::string PluginIPAPI::GetTimezone(std::string ip)
-{
-    try {
-        auto m = maxminddbCity->get_all_fields(ip);
-        return m["time_zone"];
-    } catch(std::exception& e) {
-        return "";
-    }
-}
+    ADD_CLASS_FUNCTION("IPAPI", "GetCity", [](FunctionContext* context, ClassData* data) -> void {
+        std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
+        try {
+            auto m = maxminddbCity->get_all_fields(ip);
+            context->SetReturn(m["city"]);
+        }
+        catch (std::exception& e) {
+            context->SetReturn("");
+        }
+        });
 
-double PluginIPAPI::GetLatitude(std::string ip)
-{
-    try {
-        auto m = maxminddbCity->get_all_fields(ip);
-        return V_StringToFloat32(m["latitude"].c_str(), 0.0f);
-    } catch(std::exception& e) {
-        return 0.0f;
-    }
-}
+    ADD_CLASS_FUNCTION("IPAPI", "GetTimezone", [](FunctionContext* context, ClassData* data) -> void {
+        std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
+        try {
+            auto m = maxminddbCity->get_all_fields(ip);
+            context->SetReturn(m["time_zone"]);
+        }
+        catch (std::exception& e) {
+            context->SetReturn("");
+        }
+        });
 
-double PluginIPAPI::GetLongitude(std::string ip)
-{
-    try {
-        auto m = maxminddbCity->get_all_fields(ip);
-        return V_StringToFloat32(m["longitude"].c_str(), 0.0f);
-    } catch(std::exception& e) {
-        return 0.0f;
-    }
-}
+    ADD_CLASS_FUNCTION("IPAPI", "GetLatitude", [](FunctionContext* context, ClassData* data) -> void {
+        std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
+        try {
+            auto m = maxminddbCity->get_all_fields(ip);
+            context->SetReturn(V_StringToFloat32(m["latitude"].c_str(), 0.0f));
+        }
+        catch (std::exception& e) {
+            context->SetReturn(0.0f);
+        }
+        });
 
-std::string PluginIPAPI::GetASN(std::string ip)
-{
-    try {
-        auto lookupRes = maxminddbASN->get_field(ip, "en", GeoLite2PP::VCStr{"autonomous_system_number", nullptr});
-        return lookupRes;
-    } catch(std::exception& e) {
-        return "";
-    }
+    ADD_CLASS_FUNCTION("IPAPI", "GetLongitude", [](FunctionContext* context, ClassData* data) -> void {
+        std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
+        try {
+            auto m = maxminddbCity->get_all_fields(ip);
+            context->SetReturn(V_StringToFloat32(m["longitude"].c_str(), 0.0f));
+        }
+        catch (std::exception& e) {
+            context->SetReturn(0.0f);
+        }
+        });
+
+    ADD_CLASS_FUNCTION("IPAPI", "GetASN", [](FunctionContext* context, ClassData* data) -> void {
+        std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
+        try {
+            auto lookupRes = maxminddbASN->get_field(ip, "en", GeoLite2PP::VCStr{ "autonomous_system_number", nullptr });
+            context->SetReturn(lookupRes);
+        }
+        catch (std::exception& e) {
+            context->SetReturn("");
+        }
+        });
+
+    ADD_VARIABLE("_G", "ip", MAKE_CLASS_INSTANCE_CTX(ctx, "IPAPI", {}));
 }
