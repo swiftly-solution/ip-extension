@@ -1,5 +1,5 @@
 #include "entrypoint.h"
-#include <embedder/src/embedder.h>
+#include <embedder/src/Embedder.h>
 #include "ipclass.h"
 
 //////////////////////////////////////////////////////////////
