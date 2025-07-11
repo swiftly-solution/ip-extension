@@ -1,0 +1,10 @@
+{
+    "kind": "function",
+    "function": "GetIsoCode",
+    "description": "Returns the ISO code for the country from which this ip originates.",
+    "arguments": {
+        "ip": "string"
+    },
+    "return": "string",
+    "games": "all"
+}

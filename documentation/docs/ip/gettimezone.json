@@ -1,0 +1,10 @@
+{
+    "kind": "function",
+    "function": "GetTimezone",
+    "description": "Returns the timezone of the country from which this ip originates.",
+    "arguments": {
+        "ip": "string"
+    },
+    "return": "string",
+    "games": "all"
+}

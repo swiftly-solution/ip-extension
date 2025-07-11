@@ -1,0 +1,10 @@
+{
+    "kind": "function",
+    "function": "GetASN",
+    "description": "Returns the Autonomous System Number (ASN) from which this ip originates.",
+    "arguments": {
+        "ip": "string"
+    },
+    "return": "string",
+    "games": "all"
+}

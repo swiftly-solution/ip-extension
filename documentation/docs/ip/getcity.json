@@ -1,0 +1,10 @@
+{
+    "kind": "function",
+    "function": "GetCity",
+    "description": "Returns the city from which this ip originates.",
+    "arguments": {
+        "ip": "string"
+    },
+    "return": "string",
+    "games": "all"
+}

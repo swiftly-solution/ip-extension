@@ -1,0 +1,10 @@
+{
+    "kind": "function",
+    "function": "GetContinent",
+    "description": "Returns the continent from which this ip originates.",
+    "arguments": {
+        "ip": "string"
+    },
+    "return": "string",
+    "games": "all"
+}

@@ -1,0 +1,10 @@
+{
+    "kind": "function",
+    "function": "GetRegion",
+    "description": "Returns the region from which this ip originates.",
+    "arguments": {
+        "ip": "string"
+    },
+    "return": "string",
+    "games": "all"
+}

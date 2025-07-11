@@ -1,0 +1,10 @@
+{
+    "kind": "function",
+    "function": "GetLatitude",
+    "description": "Returns the latitude from which this ip originates.",
+    "arguments": {
+        "ip": "string"
+    },
+    "return": "float",
+    "games": "all"
+}

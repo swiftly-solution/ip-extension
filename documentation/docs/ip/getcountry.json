@@ -1,0 +1,10 @@
+{
+    "kind": "function",
+    "function": "GetCountry",
+    "description": "Returns the country from which this ip originates.",
+    "arguments": {
+        "ip": "string"
+    },
+    "return": "string",
+    "games": "all"
+}
