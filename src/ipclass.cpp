@@ -14,6 +14,8 @@ void SetupScripting(EContext* ctx)
 
     ADD_CLASS("IPAPI");
 
+    ADD_CLASS_FUNCTION("IPAPI", "IPAPI", [](FunctionContext* context, ClassData* data) -> void {});
+
     ADD_CLASS_FUNCTION("IPAPI", "GetIsoCode", [](FunctionContext* context, ClassData* data) -> void {
         std::string ip = context->GetArgumentOr<std::string>(0, "0.0.0.0");
         try {
